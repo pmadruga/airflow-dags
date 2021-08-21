@@ -19,9 +19,9 @@ def EXAMPLE_taskgroups():
     # each subtask will perform an operation on the initial value
     # this group will return a list with all the values of the subtasks
     @task_group(group_id='group_1')
-    def section_1(value):
+    def group_1(value):
 
-        # The @tasks below can be defined outside function `section_1`
+        # The @tasks below can be defined outside function `group_1`
         # What matters is where they are referenced
         @task(task_id='subtask_1')
         def task_1(value):
@@ -46,7 +46,7 @@ def EXAMPLE_taskgroups():
         return [task_1_result, task_2_result, task_3_result]
 
     @task_group(group_id='group_2')
-    def section_2(list):
+    def group_2(list):
 
         @task(task_id='subtask_4')
         def task_4(values):
@@ -66,7 +66,7 @@ def EXAMPLE_taskgroups():
     def end(value):
         print(f'this is the end: {value}')
 
-    return end(section_2(section_1(init())))
+    return end(group_2(group_1(init())))
 
 
 dag = EXAMPLE_taskgroups()
